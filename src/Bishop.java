@@ -14,5 +14,5 @@ public class Bishop extends Piece {
   public String toString() {
     return "Bishop{Value=" + value + ", isWhite=" + isWhite + "}";
   }
-
+// testing testing
 }
