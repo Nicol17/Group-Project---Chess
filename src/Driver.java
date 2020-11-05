@@ -3,6 +3,8 @@ import java.util.ArrayList;
 public class Driver {
 
   public static void main(String[] args) {
+    // testing - by yurie
+
     ArrayList<Piece> whites = new ArrayList();
     Pawn pawn = new Pawn(true);
     Knight knight = new Knight(true);
