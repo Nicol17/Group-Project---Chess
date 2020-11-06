@@ -1,18 +1,30 @@
 public class King extends Piece {
+    ///////////////////////////////////////////////////
+    private static final int VALUE = 1_000;
+    ///////////////////////////////////////////////////
 
-  public King(boolean isWhite) {
-    super(isWhite);
-    super.value = 1000;
-  }
 
-  // Method
-  public void move() {
-    System.out.println("One Square");
-  }
+    public King(int value, boolean isWhite, Position position) {
+        super(value, isWhite, position);
+    }
 
-  @Override
-  public String toString() {
-    return "King{Value=" + value + ", isWhite=" + isWhite + "}";
-  }
+//    public King() {
+//        this(false);
+//    }
+//
+//    public King(boolean isWhite) {
+//        super(VALUE_KING, isWhite);
+//    }
 
+    @Override
+    public void move() {
+        System.out.println("One square");
+    }
+
+    @Override
+    public String toString() {
+        return "King{" +
+                "value=" + getValue() +
+                '}';
+    }
 }
