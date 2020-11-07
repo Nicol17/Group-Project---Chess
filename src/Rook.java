@@ -1,23 +1,14 @@
 public class Rook extends Piece {
     ///////////////////////////////////////////////////
-    private static final int VALUE = 5;
+    protected static final int VALUE = 5;
     ///////////////////////////////////////////////////
 
-    public Rook(int value, boolean isWhite, Position position) {
-        super(value, isWhite, position);
+    public Rook(boolean isWhite, Position position) {
+        super(VALUE, isWhite, position);
     }
 
-
-//    public Rook() {
-//        this(false);
-//    }
-
-//    public Rook(boolean isWhite) {
-//        super(VALUE_ROOK, isWhite);
-//    }
-
     @Override
-    public void move() {
+    public void move(Position newPosition) {
         System.out.println("Horizontally or vertically");
     }
 

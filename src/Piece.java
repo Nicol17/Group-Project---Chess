@@ -33,7 +33,7 @@ public abstract class Piece {
         this.position = position;
     }
 
-    public abstract void move();
+    public abstract void move(Position newPosition);
 
     /**
      * Return true if the new position is inside the board.

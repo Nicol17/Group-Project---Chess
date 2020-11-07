@@ -1,22 +1,14 @@
 public class Knight extends Piece {
     ///////////////////////////////////////////////////
-    private static final int VALUE = 2;
+    protected static final int VALUE = 2;
     ///////////////////////////////////////////////////
 
-    public Knight(int value, boolean isWhite, Position position) {
-        super(value, isWhite, position);
+    public Knight(boolean isWhite, Position position) {
+        super(VALUE, isWhite, position);
     }
 
-//    public Knight() {
-//        this(false);
-//    }
-//
-//    public Knight(boolean isWhite) {
-//        super(VALUE_KNIGHT, isWhite);
-//    }
-
     @Override
-    public void move() {
+    public void move(Position newPosition) {
         System.out.println("Like an L");
     }
 

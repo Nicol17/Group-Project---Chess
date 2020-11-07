@@ -1,22 +1,14 @@
 public class Queen extends Piece {
     ///////////////////////////////////////////////////
-    private static final int VALUE = 9;
+    protected static final int VALUE = 9;
     ///////////////////////////////////////////////////
 
-    public Queen(int value, boolean isWhite, Position position) {
-        super(value, isWhite, position);
+    public Queen(boolean isWhite, Position position) {
+        super(VALUE, isWhite, position);
     }
 
-//    public Queen() {
-//        this(false);
-//    }
-
-//    public Queen(boolean isWhite) {
-//        super(VALUE_QUEEN, isWhite);
-//    }
-
     @Override
-    public void move() {
+    public void move(Position newPosition) {
         System.out.println("Like bishop and rook");
     }
 
