@@ -1,28 +1,19 @@
 public class Bishop extends Piece {
     ///////////////////////////////////////////////////
-    private static final int VALUE = 3;
+    protected static final int VALUE = 3;
     ///////////////////////////////////////////////////
 
     public Bishop(boolean isWhite, Position position) {
         super(VALUE, isWhite, position);
     }
 
-    public Bishop(int value, boolean isWhite, Position position) {
-        super(value, isWhite, position);
-    }
-
-
-//    public Bishop() {
-//        this(false);
-//    }
-//
-//    public Bishop(boolean isWhite) {
-//        super(VALUE_BISHOP, isWhite);
-//    }
-
     @Override
-    public void move() {
-        System.out.println("Diagonally");
+    public void move(Position newPosition) {
+        // if there is another piece is exist in the destiny position, should stop one block before
+        // better to loop to increase row and col till the destiny, and set at the maximum position.
+
+        setPosition(newPosition);
+        System.out.println("Moved Diagonally");
     }
 
     /**

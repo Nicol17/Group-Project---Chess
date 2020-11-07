@@ -2,27 +2,17 @@ import java.util.Objects;
 
 public class Pawn extends Piece {
     ///////////////////////////////////////////////////
-    private static final int VALUE = 1;
+    protected static final int VALUE = 1;
     ///////////////////////////////////////////////////
 
     private boolean promoted;
     private Piece newPiece;
 
-    public Pawn(int value, boolean isWhite, Position position, boolean promoted, Piece newPiece) {
-        super(value, isWhite, position);
+    public Pawn( boolean isWhite, Position position, boolean promoted, Piece newPiece) {
+        super(VALUE, isWhite, position);
         this.promoted = promoted;
         this.newPiece = newPiece;
     }
-
-//    public Pawn() {
-//        this(false, false, null);
-//    }
-//
-//    public Pawn(boolean isWhite, boolean promoted, Piece newPiece) {
-//        super(VALUE_PAWN, isWhite);
-//        this.promoted = promoted;
-//        this.newPiece = newPiece;
-//    }
 
     // not sure what they want..
     public void promote(Piece newPiece) {
@@ -33,7 +23,7 @@ public class Pawn extends Piece {
     }
 
     @Override
-    public void move() {
+    public void move(Position newPosition) {
         System.out.println("Forward 1");
     }
 
