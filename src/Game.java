@@ -4,7 +4,7 @@ public class Game {
     ///////////////////////////////////////////////////
     private static final Integer BOARD_RANGE = 8;
     private static final char[] COL_NAME = new char[]{'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
-    private static final HashMap<Integer, String> WHITE_PIECES = new HashMap<>(){{
+    private static final HashMap<Integer, String> WHITE_PIECES = new HashMap(){{
         put(Bishop.VALUE, "♗");
         put(King.VALUE, "♔");
         put(Knight.VALUE, "♘");
@@ -12,7 +12,7 @@ public class Game {
         put(Queen.VALUE, "♕");
         put(Rook.VALUE, "♖");
     }};
-    private static final HashMap<Integer, String> BLACK_PIECES = new HashMap<>(){{
+    private static final HashMap<Integer, String> BLACK_PIECES = new HashMap(){{
         put(Bishop.VALUE, "♝");
         put(King.VALUE, "♚");
         put(Knight.VALUE, "♞");

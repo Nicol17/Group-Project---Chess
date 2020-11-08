@@ -29,17 +29,17 @@ public class Bishop extends Piece {
         if (!super.isValidMove(newPosition))
             return false;
         return (Math.abs(this.position.getRow() - newPosition.getRow())
-                == Math.abs(this.position.getCol() - newPosition.getCol()));
+            == Math.abs(this.position.getCol() - newPosition.getCol()));
     }
 
     @Override
     public String toString() {
         String color = (isWhite()) ? "White" : "Black";
         return "Bishop{" +
-                "value=" + getValue() +
-                ", color=" + color +
-                ", position=(" + getPosition().getRow() + ", " + getPosition().getCol() + ')' +
-                '}';
+            "value=" + getValue() +
+            ", color=" + color +
+            ", position=(" + getPosition().getRow() + ", " + getPosition().getCol() + ')' +
+            '}';
     }
 
 
