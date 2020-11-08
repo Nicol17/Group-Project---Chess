@@ -14,9 +14,32 @@ public class King extends Piece {
     }
 
     @Override
+    public boolean isValidMove (Position newPosition){
+        if (!super.isValidMove(position)){
+            return false;
+        }
+        if (newPosition.getCol() ==  (this.position.getCol() +1) && (newPosition.getRow() == this.position.getRow()) ||
+            newPosition.getCol() ==  (this.position.getCol() -1) && (newPosition.getRow() == this.position.getRow()) ||
+            newPosition.getCol() ==  (this.position.getCol()) && newPosition.getRow() == (this.position.getRow() +1) ||
+            newPosition.getCol() ==  (this.position.getCol()) && newPosition.getRow() == (this.position.getRow() -1) ||
+            newPosition.getCol() ==  (this.position.getCol() + 1) && newPosition.getRow() == (this.position.getRow() + 1) ||
+            newPosition.getCol() ==  (this.position.getCol() - 1) && newPosition.getRow() == (this.position.getRow() + 1) ||
+            newPosition.getCol() ==  (this.position.getCol() + 1) && newPosition.getRow() == (this.position.getRow() -1) ||
+            newPosition.getCol() ==  (this.position.getCol() - 1) && newPosition.getRow() == (this.position.getRow() -1)) {
+            return true;
+        }  else {
+            return false;
+        }
+    }
+
+
+    @Override
     public String toString() {
+        String color = (isWhite()) ? "White" : "Black";
         return "King{" +
-                "value=" + getValue() +
-                '}';
+            "value=" + getValue() +
+            ", color=" + color +
+            ", position=(" + getPosition().getRow() + ", " + getPosition().getCol() + ')' +
+            '}';
     }
 }

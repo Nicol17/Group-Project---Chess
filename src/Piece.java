@@ -43,14 +43,14 @@ public abstract class Piece {
      */
     public boolean isValidMove(Position newPosition) {
         return (newPosition.getRow() >= 0 && newPosition.getCol() >= 0
-                && newPosition.getRow() < 8 && newPosition.getCol() < 8);
+            && newPosition.getRow() < 8 && newPosition.getCol() < 8);
     }
 
     @Override
     public String toString() {
         return "Piece{" +
-                "value=" + value +
-                '}';
+            "value=" + value +
+            '}';
     }
 
     @Override
@@ -59,6 +59,6 @@ public abstract class Piece {
         if (o == null || getClass() != o.getClass()) return false;
         Piece piece = (Piece) o;
         return value == piece.value &&
-                isWhite == piece.isWhite;
+            isWhite == piece.isWhite;
     }
 }
