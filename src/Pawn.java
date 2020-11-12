@@ -134,15 +134,28 @@ public class Pawn extends Piece {
         if (!super.isValidMove(position)) {
             return false;
         }
-        if (this.position.getCol() == 2) {
-            if (newPosition.getRow() == (this.position.getRow() + 1) ||
-                    newPosition.getRow() == (this.position.getRow() + 2)) {
+        if (isWhite()) {
+            if (this.position.getRow() == 2) {
+                if (newPosition.getRow() == (this.position.getRow() + 1) ||
+                        newPosition.getRow() == (this.position.getRow() + 2)) {
+                    return true;
+                }
+            } else if (newPosition.getRow() == (this.position.getRow() + 1)) {
                 return true;
             }
-        } else if (newPosition.getRow() == (this.position.getRow() + 1)) {
-            return true;
+            return false;
+            // Blacks
+        } else {
+            if (this.position.getRow() == 7) {
+                if (newPosition.getRow() == (this.position.getRow() - 1) ||
+                        newPosition.getRow() == (this.position.getRow() - 2)) {
+                    return true;
+                }
+            } else if (newPosition.getRow() == (this.position.getRow() - 1)) {
+                return true;
+            }
+            return false;
         }
-        return false;
     }
 
     @Override
