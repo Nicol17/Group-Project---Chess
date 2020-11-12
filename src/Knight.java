@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Knight extends Piece {
     ///////////////////////////////////////////////////
     protected static final int VALUE = 2;
@@ -5,6 +7,11 @@ public class Knight extends Piece {
 
     public Knight(boolean isWhite, Position position) {
         super(VALUE, isWhite, position);
+    }
+
+    @Override
+    public ArrayList<Position> getPoss(Piece[][] board, Piece selPiece) {
+        return null;
     }
 
     @Override

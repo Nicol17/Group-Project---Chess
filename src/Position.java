@@ -1,3 +1,4 @@
+
 public class Position {
     private int row;
     private int col;
@@ -21,5 +22,23 @@ public class Position {
 
     public void setCol(int col) {
         this.col = col;
+    }
+
+    @Override
+    public String toString() {
+        return "Position{" +
+                "row=" + row +
+                ", col=" + col +
+                '}';
+    }
+
+    // necessary to use 'contains' method
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Position position = (Position) o;
+        return row == position.row &&
+                col == position.col;
     }
 }

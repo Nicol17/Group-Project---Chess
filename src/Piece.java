@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public abstract class Piece {
     private int value;
     private boolean isWhite;
@@ -33,24 +35,27 @@ public abstract class Piece {
         this.position = position;
     }
 
+    public abstract ArrayList<Position> getPoss(Piece[][] board, Piece selPiece);
+
     public abstract void move(Position newPosition);
 
     /**
      * Return true if the new position is inside the board.
-     * Should include '0' as minimum range since row/col index ranges are 0 to 7.
+     * Should include '0' as minimum range since row/col index ranges are 0 to Game.BOARD_RANGE - 1.
+     *
      * @param newPosition
      * @return
      */
     public boolean isValidMove(Position newPosition) {
         return (newPosition.getRow() >= 0 && newPosition.getCol() >= 0
-            && newPosition.getRow() < 8 && newPosition.getCol() < 8);
+                && newPosition.getRow() < Game.BOARD_RANGE && newPosition.getCol() < Game.BOARD_RANGE);
     }
 
     @Override
     public String toString() {
         return "Piece{" +
-            "value=" + value +
-            '}';
+                "value=" + value +
+                '}';
     }
 
     @Override
@@ -59,6 +64,6 @@ public abstract class Piece {
         if (o == null || getClass() != o.getClass()) return false;
         Piece piece = (Piece) o;
         return value == piece.value &&
-            isWhite == piece.isWhite;
+                isWhite == piece.isWhite;
     }
 }
