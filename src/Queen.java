@@ -29,12 +29,12 @@ public class Queen extends Piece {
         Piece b = new Bishop(selPiece.isWhite(), new Position(row, col));
         Piece r = new Rook(selPiece.isWhite(), new Position(row, col));
         // diagonally: Bishop class
-        ArrayList<Position> possBishop = b.getPoss(board, b);
+        ArrayList<Position> possDiag = b.getPoss(board, b);
         // vertically and horizontally: Rook class
-        ArrayList<Position> possRook = r.getPoss(board, selPiece);
+        ArrayList<Position> possVH = r.getPoss(board, selPiece);
 
-        poss.addAll(possBishop);
-        poss.addAll(possRook);
+        poss.addAll(possDiag);
+        poss.addAll(possVH);
         return poss;
     }
 
