@@ -10,7 +10,11 @@ public class Bishop extends Piece {
     }
 
     /**
-     * Return a list of possible position for the piece user selected
+     * Return a list of possible positions for the piece user selected (Bishop):
+     * - moves only diagonally
+     * - no limit till hit another piece
+     * - if hit the same color (Piece A), stop one block before --> new position is Piece A's (row -1, col -1)
+     * - if hit the other color (Piece B), take it and stop     --> new position is the same as Piece B
      *
      * @param board    the current board from Game class
      * @param selPiece the selected piece that user wants to move it
