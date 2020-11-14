@@ -25,6 +25,12 @@ public class Game {
     }};
     private static final Pattern PATTERN_SINGLE_POSITION = Pattern.compile("[a-hA-H][1-8]", Pattern.CASE_INSENSITIVE);
     private static final Pattern PATTERN_DOUBLE_POSITION = Pattern.compile("[a-hA-H][1-8][a-hA-H][1-8]", Pattern.CASE_INSENSITIVE);
+    private static final String HELP_OPTION = "help";
+    private static final String BOARD_OPTION = "board";
+    private static final String RESIGN_OPTION = "resign";
+    private static final String MOVES_OPTION = "moves";
+    private static final String QUIT_OPTION = "quit";
+
     ///////////////////////////////////////////////////
     private Piece[][] board;
     private boolean isWhiteTurn;        // true: white, false: black
@@ -80,6 +86,12 @@ public class Game {
             // switch player
             if (!isContinueTurn)
                 switchTurn();
+
+            // check if game is over
+            if (isGameOver())
+                displayResult();
+                break;
+
         }
     }
 
@@ -145,25 +157,25 @@ public class Game {
      * @return boolean - true: continue game, false: quit game
      */
     private boolean menuOptions(String userInput) {
-        switch (userInput) {
-            case "help": // display all options
+        switch (userInput.toLowerCase()) {
+            case HELP_OPTION: // display all options
                 displayHelp();
                 break;
-            case "board": // display the board
+            case BOARD_OPTION: // display the board
                 displayBoard();
                 break;
-            case "resign": // Player resigns
+            case RESIGN_OPTION: // Player resigns
                 if (isWhiteTurn) {
-                    System.out.println("Game Over (score?) Black won by resignation");
+                    System.out.println("Game Over Black won by resignation");
                 } else {
-                    System.out.println("Game Over (score?) Whites won by resignation");
+                    System.out.println("Game Over Whites won by resignation");
                 }
                 return false;
-            case "moves": // list all possible moves
+            case MOVES_OPTION: // list all possible moves
                 //displayPossibilities();
-                System.out.println("will show moves");
+                displayMoves();
                 break;
-            case "quit":   // quit game
+            case QUIT_OPTION:   // quit game
                 System.out.println("Bye!");
                 return false;
             default:
@@ -196,6 +208,55 @@ public class Game {
         System.out.println("type a square (e.g. a2, b1...) to list all possible moves for that square");
         System.out.println("type UCI (e.g.a2a4, b1c3) to make a move");
     }
+
+    public void displayMoves () {
+        for (int r = BOARD_RANGE - 1; r >= 0; r--) {
+            for (int c = 0; c < BOARD_RANGE; c++) {
+                // empty place: show a dash
+                if (board[r][c] == null) {
+                    continue;
+                }
+
+                int value = board[r][c].getValue();
+                if (board[r][c].isWhite() == isWhiteTurn()) {
+                    ArrayList<Position> poss = board[r][c].getPoss(board, board[r][c]);
+                    displayPoss(poss);
+                    switch (value) {
+                        case (Pawn.VALUE):
+                            System.out.println("Pawn available moves: " + displayPoss(poss));
+                        case (Rook.VALUE):
+                            System.out.println("Rook available moves: " + displayPoss(poss));
+                        case (Knight.VALUE):
+                            System.out.println("Knight available moves: " + displayPoss(poss));
+                        case (Bishop.VALUE):
+                            System.out.println("Bishop available moves: " + displayPoss(poss));
+                        case (Queen.VALUE):
+                            System.out.println("Queen available moves: " + displayPoss(poss));
+                        case (King.VALUE):
+                            System.out.println("King available moves: " + displayPoss(poss));
+                    }
+                }
+            }
+        }
+
+
+
+    }
+////            System.out.printf("Pawn available moves: " + displayPoss(, board) +
+//                    "\nPiece[r][c]  "available moves: " Displayposs+
+//                    "\nKnight available moves: " +
+//                    "\nBishop available moves: " +
+//                    "\nQueen available moves: " + displayPoss(, board) +
+//                    "\nKing available moves: ");
+//        } else {
+//            System.out.printf("Pawn available moves: " +
+//                    "\nRook available moves: " +
+//                    "\nKnight available moves: " +
+//                    "\nBishop available moves: " +
+//                    "\nQueen available moves: " +
+//                "\nKing available moves: ");
+//        }
+
 
     /**
      * Display the current board
@@ -419,6 +480,9 @@ public class Game {
         return -1;
     }
 
+    private boolean displayPoss(ArrayList<Position> positions) {
+        return displayPoss("",positions, false);
+    }
     /**
      * Display a list of Positions as a string.
      * Column number is converted to a char of Column Name.
@@ -428,9 +492,18 @@ public class Game {
      * @param positions an ArrayList of Position
      * @return boolean - true: there is possible positions, false: no possible positions
      */
-    private boolean displayPoss(String input, ArrayList<Position> positions) {
-        StringBuilder sb = new StringBuilder("Possible moves for ");
-        sb.append(input).append(":\n");
+
+        private boolean displayPoss(String input, ArrayList<Position> positions) {
+        return displayPoss(input, positions, true);
+    }
+
+        private boolean displayPoss(String input, ArrayList<Position> positions, boolean individualDisplay) {
+        StringBuilder sb = new StringBuilder();
+        if (individualDisplay) {
+            sb.append("Possible moves for ");
+            sb.append(input).append(":\n");
+
+        }
         if (positions == null || positions.size() == 0) {
             sb.append("No positions where this piece can move.");
             System.out.println(sb.toString());
@@ -451,5 +524,38 @@ public class Game {
         System.out.println(sb.toString());
         return true;
     }
+
+    public boolean isGameOver() {
+        if (isKingCheckmate()) {
+            return true;
+        } else if (isGameDrawn()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean isKingCheckmate() {
+        // if King is in Check and has no legal movements --> CHECKMATE
+        // Eliminate possibilities that coincide with Enemy's pieces
+        // if King.getPoss == null && King in check --> return True
+        return true;
+    }
+
+    public boolean isGameDrawn() {
+        // if King is not in check but it has no legal movements
+        // Eliminate possibilities that coincide with Enemy's pieces
+        // if King.getPoss == null && King in check --> return True
+        return true;
+    }
+
+    public void displayResult() {
+        if (isWhiteTurn() && isKingCheckmate()) {
+            System.out.println("Game over! Blacks win by Checkmate!");
+        } else {
+            System.out.println("Game over! Whites win by Checkmate!");
+        }
+    }
+
 }
 
