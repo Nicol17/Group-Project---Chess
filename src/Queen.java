@@ -10,7 +10,7 @@ public class Queen extends Piece {
     }
 
     /**
-     * Return a list of possible positions for the piece user selected (Bishop):
+     * Return a list of possible positions for the piece user selected (Queen):
      * - moves diagonally, vertically, and horizontally
      * - diagonal moves: call Bishop's getPoss
      * - vertical and horizontal moves: call Rook's getPoss
