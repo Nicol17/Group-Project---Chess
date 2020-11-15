@@ -28,8 +28,8 @@ public class Bishop extends Piece {
         int curCol;
         ArrayList<Position> poss = new ArrayList<>();
 
-        System.out.println("-- Bishop is called --");
-        System.out.printf("selected (row, col): (%d, %d)%n", row, col);
+//        System.out.println("-- Bishop is called --");
+//        System.out.printf("selected (row, col): (%d, %d)%n", row, col);
 
         // diagonal / left to right / up
         curRow = row;
