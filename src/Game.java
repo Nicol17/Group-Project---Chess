@@ -35,11 +35,16 @@ public class Game {
     private Piece[][] board;
     private boolean isWhiteTurn;        // true: white, false: black
     private boolean isContinueTurn;     // true: will not switch turn
+    private King whiteKing;
+    private King blackKing;
+
 
     public Game() {
         this.board = new Piece[BOARD_RANGE][BOARD_RANGE];
         this.isWhiteTurn = true;        // Start from White
         this.isContinueTurn = false;    // default: switch in each execution
+        whiteKing = null;
+        blackKing = null;
     }
 
     public boolean isWhiteTurn() {
@@ -88,10 +93,10 @@ public class Game {
                 switchTurn();
 
             // check if game is over
-            if (isGameOver())
+            if (isGameOver()) {
                 displayResult();
                 break;
-
+            }
         }
     }
 
@@ -99,12 +104,14 @@ public class Game {
      * Initialize board
      */
     private void initBoard() {
+        whiteKing = new King(true, new Position(0, 4));
+        blackKing = new King(false, new Position(7, 4));
         // white
         board[0][0] = new Rook(true, new Position(0, 0));
         board[0][1] = new Knight(true, new Position(0, 1));
         board[0][2] = new Bishop(true, new Position(0, 2));
         board[0][3] = new Queen(true, new Position(0, 3));
-        board[0][4] = new King(true, new Position(0, 4));
+        board[0][4] = whiteKing;
         board[0][5] = new Bishop(true, new Position(0, 5));
         board[0][6] = new Knight(true, new Position(0, 6));
         board[0][7] = new Rook(true, new Position(0, 7));
@@ -124,7 +131,7 @@ public class Game {
         board[7][1] = new Knight(false, new Position(7, 1));
         board[7][2] = new Bishop(false, new Position(7, 2));
         board[7][3] = new Queen(false, new Position(7, 3));
-        board[7][4] = new King(false, new Position(7, 4));
+        board[7][4] = blackKing;
         board[7][5] = new Bishop(false, new Position(7, 5));
         board[7][6] = new Knight(false, new Position(7, 6));
         board[7][7] = new Rook(false, new Position(7, 7));
@@ -160,9 +167,11 @@ public class Game {
         switch (userInput.toLowerCase()) {
             case HELP_OPTION: // display all options
                 displayHelp();
+                setContinueTurn(true);
                 break;
             case BOARD_OPTION: // display the board
                 displayBoard();
+                setContinueTurn(true);
                 break;
             case RESIGN_OPTION: // Player resigns
                 if (isWhiteTurn) {
@@ -174,6 +183,7 @@ public class Game {
             case MOVES_OPTION: // list all possible moves
                 //displayPossibilities();
                 displayMoves();
+                setContinueTurn(true);
                 break;
             case QUIT_OPTION:   // quit game
                 System.out.println("Bye!");
@@ -187,6 +197,7 @@ public class Game {
                     toSelect(userInput);
                 } else {
                     System.out.println("Invalid Input, please try again");
+                    setContinueTurn(true);
                 }
                 break;
             // case square:
@@ -242,20 +253,6 @@ public class Game {
 
 
     }
-////            System.out.printf("Pawn available moves: " + displayPoss(, board) +
-//                    "\nPiece[r][c]  "available moves: " Displayposs+
-//                    "\nKnight available moves: " +
-//                    "\nBishop available moves: " +
-//                    "\nQueen available moves: " + displayPoss(, board) +
-//                    "\nKing available moves: ");
-//        } else {
-//            System.out.printf("Pawn available moves: " +
-//                    "\nRook available moves: " +
-//                    "\nKnight available moves: " +
-//                    "\nBishop available moves: " +
-//                    "\nQueen available moves: " +
-//                "\nKing available moves: ");
-//        }
 
 
     /**
@@ -334,6 +331,17 @@ public class Game {
         String destPos = getSecondPos(userInput);
 //        System.out.printf("selected: '%s' (%d, %d), %s%n", selPos, selRow, selCol, board[selRow][selCol]);
 
+        if (!isValidSelect(selRow, selCol))
+            return false;
+
+        // empty place
+        if(board[selRow][selCol] == null) {
+            System.out.println("No piece is there, please try again.");
+            // continue this player
+            setContinueTurn(true);
+            return false;
+        }
+
         // get possible positions for selected piece
         ArrayList<Position> poss = board[selRow][selCol].getPoss(board, board[selRow][selCol]);
 //        System.out.println("poss: \n" + Arrays.toString(poss.toArray()));
@@ -365,6 +373,31 @@ public class Game {
 
         // invalid destiny: get user input for the destiny
         return toDestiny(selPos, poss);
+    }
+
+    /**
+     * Validate the selected piece
+     * @param selRow
+     * @param selCol
+     * @return
+     */
+    private boolean isValidSelect(int selRow, int selCol){
+        // empty place
+        if(board[selRow][selCol] == null) {
+            System.out.println("No piece is there, please try again.");
+            // continue this player
+            setContinueTurn(true);
+            return false;
+        }
+
+        // different color
+        if(board[selRow][selCol].isWhite() != isWhiteTurn){
+            System.out.println("Different color was selected, please try again.");
+            // continue this player
+            setContinueTurn(true);
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -414,6 +447,13 @@ public class Game {
      * @param destCol
      */
     private void movePiece(int selRow, int selCol, int destRow, int destCol) {
+        if (board[selRow][selCol].getValue() == King.VALUE) {
+            if (board[selRow][selCol].isWhite()) {
+                whiteKing.setPosition(new Position(destRow, destCol));
+            } else {
+                blackKing.setPosition(new Position(destRow, destCol));
+            }
+        }
         board[selRow][selCol].setPosition(new Position(destRow, destCol));
         board[destRow][destCol] = board[selRow][selCol];
         board[selRow][selCol] = null;
@@ -539,14 +579,46 @@ public class Game {
         // if King is in Check and has no legal movements --> CHECKMATE
         // Eliminate possibilities that coincide with Enemy's pieces
         // if King.getPoss == null && King in check --> return True
-        return true;
+        if (isWhiteTurn()) {
+            // Current Turn is White: check for White King
+            if (whiteKing.getPoss(board, whiteKing) == null
+                && (King.isKingChecked(board, whiteKing.getPosition(), isWhiteTurn))) {
+                // @Nico: ^ if you don't call 'escapeFromEnemy()' directly, then where are you going to use 'curKing' ArrayList?
+                return true;
+            }
+        } else {
+            // Current Turn is Black: check for Black King
+            if (blackKing.getPoss(board, blackKing) == null
+                && (King.isKingChecked(board, blackKing.getPosition(), isWhiteTurn))) {
+                return true;
+            }
+        }
+        return false;
     }
+
 
     public boolean isGameDrawn() {
         // if King is not in check but it has no legal movements
         // Eliminate possibilities that coincide with Enemy's pieces
         // if King.getPoss == null && King in check --> return True
-        return true;
+//        if (King.escapeFromEnemy(board, kingposs) == null && (!isKingCheck)) {
+//            return true;
+//        }
+        if (isWhiteTurn()) {
+            // Current Turn is White: check for White King
+            if (whiteKing.getPoss(board, whiteKing) == null
+                && (!King.isKingChecked(board, whiteKing.getPosition(), isWhiteTurn))) {
+                // @Nico: ^ if you don't call 'escapeFromEnemy()' directly, then where are you going to use 'curKing' ArrayList?
+                return true;
+            }
+        } else {
+            // Current Turn is Black: check for Black King
+            if (blackKing.getPoss(board, blackKing) == null
+                && (!King.isKingChecked(board, blackKing.getPosition(), isWhiteTurn))) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void displayResult() {
@@ -556,6 +628,5 @@ public class Game {
             System.out.println("Game over! Whites win by Checkmate!");
         }
     }
-
 }
 
