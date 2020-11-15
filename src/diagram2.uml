@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="0.0" y="0.0">Game</node>
+    <node x="133.5" y="1139.0">Driver</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="Driver" target="Game">
+      <point x="-44.5" y="-28.0" />
+      <point x="178.0" y="1114.0" />
+      <point x="111.25" y="1114.0" />
+      <point x="-111.25" y="544.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.7000000000000001" x="633.1428571428572" y="599.2857142857142" />
+  <SelectedNodes>
+    <node>Game</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
