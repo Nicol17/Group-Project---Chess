@@ -87,21 +87,19 @@ public class King extends Piece {
         ArrayList<Position> poss = new ArrayList<>();
         for (int r = Game.BOARD_RANGE - 1; r >= 0; r--) {
             for (int c = 0; c < Game.BOARD_RANGE; c++) {
-                // no piece: skip or same color
+//        no piece: skip
                 if (board[r][c] == null) {
                     continue;
                 }
                 if (!board[r][c].isWhite()) {
-                    // different color -> getPoss
-                    if(board[r][c].getValue() == King.VALUE)
-                        continue;
+//          different color -> getPoss
                     ArrayList<Position> result = board[r][c].getPoss(board, board[r][c]);
-                    // System.out.println("poss: \n" + Arrays.toString(poss.toArray()));
+//        System.out.println("poss: \n" + Arrays.toString(poss.toArray()));
                     // no possible positions
                     if (result == null || result.size() == 0) {
                         continue;
                     }
-                    for (Position p : kingPoss) {
+                    for(Position p : kingPoss) {
                         if (result.contains(p)) {
                             // same position : remove from kingPoss
                             kingPoss.remove(p);
