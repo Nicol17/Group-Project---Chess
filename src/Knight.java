@@ -46,7 +46,7 @@ public class Knight extends Piece {
         if (result != null) poss.add(result);
 
         // down / left
-        result = checkDest(board, selPiece, row - 2, col + 1);
+        result = checkDest(board, selPiece, row - 2, col - 1);
         if (result != null) poss.add(result);
 
         // left / up
@@ -70,6 +70,10 @@ public class Knight extends Piece {
      * @return Position if {@param piece} can move to. otherwise, null
      */
     private Position checkDest(Piece[][] board, Piece selPiece, int targetRow, int targetCol) {
+        if (targetRow < 0 || targetRow >= Game.BOARD_RANGE
+                || targetCol < 0 || targetCol >= Game.BOARD_RANGE)
+            return null;
+
         if (board[targetRow][targetCol] == null) {
             // no piece: can move
             return new Position(targetRow, targetCol);
