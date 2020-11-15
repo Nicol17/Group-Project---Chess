@@ -28,13 +28,13 @@ public class Bishop extends Piece {
         int curCol;
         ArrayList<Position> poss = new ArrayList<>();
 
-//        System.out.println("-- Bishop is called --");
-//        System.out.printf("selected (row, col): (%d, %d)%n", row, col);
+        System.out.println("-- Bishop is called --");
+        System.out.printf("selected (row, col): (%d, %d)%n", row, col);
 
         // diagonal / left to right / up
         curRow = row;
         curCol = col;
-        while (0 < curRow && curRow < Game.BOARD_RANGE - 1 && 0 < curCol && curCol < Game.BOARD_RANGE - 1) {
+        while (0 <= curRow && curRow < Game.BOARD_RANGE - 1 && 0 <= curCol && curCol < Game.BOARD_RANGE - 1) {
             Object[] result = checkDest(board, selPiece, ++curRow, ++curCol);
             if (result[0] != null)
                 poss.add((Position) result[0]);
@@ -45,7 +45,7 @@ public class Bishop extends Piece {
         // diagonal / left to right / down
         curRow = row;
         curCol = col;
-        while (0 < curRow && curRow < Game.BOARD_RANGE - 1 && 0 < curCol && curCol < Game.BOARD_RANGE - 1) {
+        while (0 < curRow && curRow < Game.BOARD_RANGE - 1 && 0 <= curCol && curCol < Game.BOARD_RANGE - 1) {
             Object[] result = checkDest(board, selPiece, --curRow, ++curCol);
             if (result[0] != null)
                 poss.add((Position) result[0]);
@@ -56,7 +56,7 @@ public class Bishop extends Piece {
         // diagonal / right to left / up
         curRow = row;
         curCol = col;
-        while (0 < curRow && curRow < Game.BOARD_RANGE - 1 && 0 < curCol && curCol < Game.BOARD_RANGE - 1) {
+        while (0 <= curRow && curRow < Game.BOARD_RANGE - 1 && 0 < curCol && curCol < Game.BOARD_RANGE - 1) {
             Object[] result = checkDest(board, selPiece, ++curRow, --curCol);
             if (result[0] != null)
                 poss.add((Position) result[0]);
