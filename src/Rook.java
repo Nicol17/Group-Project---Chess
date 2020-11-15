@@ -18,60 +18,182 @@ public class Rook extends Piece {
      */
     @Override
     public ArrayList<Position> getPoss(Piece[][] board, Piece selPiece) {
-        ArrayList<Position> positions = new ArrayList<>();
+        ArrayList<Position> poss = new ArrayList<>();
+        final int rowPos = selPiece.getPosition().getRow();
+        final int colPos = selPiece.getPosition().getCol();
+        int curRow;
+        int curCol;
+        // move white Rook
+        if (selPiece.isWhite()) {
+            // from rowPos to row index 0(line 0)
+            curRow = rowPos;
+            curCol = colPos;
+            while (curRow >= 0) {
+                if (curRow == rowPos) {
+                    curRow--;
+                    continue;
+                }
+                if (board[curRow][curCol] == null) {
+                    poss.add(new Position(curRow, curCol));
+                    curRow--;
+                } else {
+                    if (selPiece.isWhite() != board[curRow][curCol].isWhite()) {
+                        poss.add(new Position(curRow, curCol));
+                        break;
+                    } else {
+                        break;
+                    }
+                }
+            }
+            // from rowPos to BOARD_RANGE(index 7 or line 8)
+            curRow = rowPos;
+            curCol = colPos;
+            while (curRow < Game.BOARD_RANGE) {
+                if (curRow == rowPos) {
+                    curRow++;
+                    continue;
+                }
+                if (board[curRow][curCol] == null) {
+                    poss.add(new Position(curRow, curCol));
+                    curRow++;
+                } else {
+                    if (selPiece.isWhite() != board[curRow][curCol].isWhite()) {
+                        poss.add(new Position(curRow, curCol));
+                        break;
+                    } else {
+                        break;
+                    }
+                }
+            }
+            // if Rook can be moved horizontally (left to right)
+            // from colPos to col index 0(line 0)
+            curRow = rowPos;
+            curCol = colPos;
+            while (curCol >= 0) {
+                if (curCol == colPos) {
+                    curCol--;
+                    continue;
+                }
+                if (board[curRow][curCol] == null) {
+                    poss.add(new Position(curRow, curCol));
+                    curCol--;
+                } else {
+                    if (selPiece.isWhite() != board[curRow][curCol].isWhite()) {
+                        poss.add(new Position(curRow, curCol));
+                        break;
+                    } else {
+                        break;
+                    }
+                }
+            }
+            // from colPos to BOARD_RANGE(index 7 or column h)
+            curRow = rowPos;
+            curCol = colPos;
+            while (curCol < Game.BOARD_RANGE) {
+                if (curCol == colPos) {
+                    curCol++;
+                    continue;
+                }
+                if (board[curRow][curCol] == null) {
+                    poss.add(new Position(curRow, curCol));
+                    curCol++;
+                } else {
+                    if (selPiece.isWhite() != board[curRow][curCol].isWhite()) {
+                        poss.add(new Position(curRow, curCol));
+                        break;
+                    } else {
+                        break;
+                    }
+                }
+            }
+            return poss;
+        // move black Rook
+        } else {
+            // if Rook can be moved horizontally (left to right)
+            // from rowPos to index 7(line 8)
+            curRow = rowPos;
+            curCol = colPos;
+            while (curRow <= Game.BOARD_RANGE - 1) {
+                if (curRow == rowPos) {
+                    curRow++;
+                    continue;
+                }
+                if (board[curRow][curCol] == null) {
+                    poss.add(new Position(curRow, curCol));
+                    curRow++;
+                } else {
+                    if (selPiece.isWhite() == board[curRow][curCol].isWhite()) {
+                        break;
+                    } else {
+                        poss.add(new Position(curRow, curCol));
+                        break;
+                    }
+                }
+            }
+            // from rowPos to index 0(line 0)
+            curRow = rowPos;
+            curCol = colPos;
+            while (curRow >= 0) {
+                if (curRow == rowPos) {
+                    curRow--;
+                    continue;
+                }
+                if (board[curRow][curCol] == null) {
+                    poss.add(new Position(curRow, curCol));
+                    curRow--;
+                } else {
+                    if (selPiece.isWhite() == board[curRow][curCol].isWhite()) {
+                        break;
+                    } else {
+                        poss.add(new Position(curRow, curCol));
+                        break;
+                    }
+                }
+            }
 
-        int row = selPiece.getPosition().getRow();
-        int col = selPiece.getPosition().getCol();
-
-        // if Rook can be moved horizontally (left to right)
-        for (int i = col; i < Game.BOARD_RANGE; i++) {
-            // if destiny piece's color is same, stop in front of the piece
-            if (selPiece.isWhite() == board[row][col + 1].isWhite()) {
-                break;
+            // if Rook can be moved vertically (bottom to top)
+            // from colPos to index 0(column a)
+            curRow = rowPos;
+            curCol = colPos;
+            while (curCol >= 0) {
+                if (curCol == colPos) {
+                    curCol--;
+                    continue;
+                }
+                if (board[curRow][curCol] == null) {
+                    poss.add(new Position(curRow, curCol));
+                    curCol--;
+                } else {
+                    if (selPiece.isWhite() == board[curRow][curCol].isWhite()) {
+                        break;
+                    } else {
+                        poss.add(new Position(curRow, curCol));
+                        break;
+                    }
+                }
             }
-            if (selPiece.isWhite() != board[row][col + 1].isWhite()) {
-                selPiece.setPosition(new Position(row, col + 1));
-                break;
+            // from colPos to index 7(column h)
+            curRow = rowPos;
+            curCol = colPos;
+            while (curCol <= Game.BOARD_RANGE - 1) {
+                if (curCol == colPos) {
+                    curCol++;
+                    continue;
+                }
+                if (board[curRow][curCol] == null) {
+                    poss.add(new Position(curRow, curCol));
+                    curCol++;
+                } else {
+                    if (selPiece.isWhite() == board[curRow][curCol].isWhite()) {
+                        break;
+                    } else {
+                        poss.add(new Position(curRow, curCol));
+                        break;
+                    }
+                }
             }
-            positions.add(new Position(row, col + 1));
+            return poss;
         }
-        // if Rook can be moved horizontally (right to left)
-        for (int i = col; i > 0; i--) {
-            // if destiny piece's color is same, stop in front of the piece
-            if (selPiece.isWhite() == board[row][col - 1].isWhite()) {
-                break;
-            }
-            if (selPiece.isWhite() != board[row][col - 1].isWhite()) {
-                positions.add(new Position(row, col - 1));
-                break;
-            }
-            positions.add(new Position(row, col - 1));
-        }
-        // if Rook can be moved vertically (bottom to top)
-        for (int i = row; i < Game.BOARD_RANGE; i++) {
-            // if destiny piece's color is same, stop in front of the piece
-            if (selPiece.isWhite() == board[row + 1][col].isWhite()) {
-                break;
-            }
-            if (selPiece.isWhite() != board[row + 1][col].isWhite()) {
-                positions.add(new Position(row + 1, col));
-                break;
-            }
-            positions.add(new Position(row + 1, col));
-        }
-        // if Rook can be moved vertically (top to bottom)
-        for (int i = row; i > 0; i--) {
-            // if destiny piece's color is same, stop in front of the piece
-            if (selPiece.isWhite() != board[row - 1][col].isWhite()) {
-                break;
-            }
-            if (selPiece.isWhite() != board[row - 1][col].isWhite()) {
-                positions.add(new Position(row - 1, col));
-                break;
-            }
-            positions.add(new Position(row - 1, col));
-        }
-        return positions;
     }
 
     @Override
