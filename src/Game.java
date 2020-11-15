@@ -220,10 +220,10 @@ public class Game {
         System.out.println("type UCI (e.g.a2a4, b1c3) to make a move");
     }
 
-    public void displayMoves () {
+    public void displayMoves() {
         for (int r = BOARD_RANGE - 1; r >= 0; r--) {
             for (int c = 0; c < BOARD_RANGE; c++) {
-                // empty place: show a dash
+                // empty place: skip
                 if (board[r][c] == null) {
                     continue;
                 }
@@ -249,11 +249,7 @@ public class Game {
                 }
             }
         }
-
-
-
     }
-
 
     /**
      * Display the current board
@@ -334,14 +330,6 @@ public class Game {
         if (!isValidSelect(selRow, selCol))
             return false;
 
-        // empty place
-        if(board[selRow][selCol] == null) {
-            System.out.println("No piece is there, please try again.");
-            // continue this player
-            setContinueTurn(true);
-            return false;
-        }
-
         // get possible positions for selected piece
         ArrayList<Position> poss = board[selRow][selCol].getPoss(board, board[selRow][selCol]);
 //        System.out.println("poss: \n" + Arrays.toString(poss.toArray()));
@@ -377,13 +365,14 @@ public class Game {
 
     /**
      * Validate the selected piece
+     *
      * @param selRow
      * @param selCol
      * @return
      */
-    private boolean isValidSelect(int selRow, int selCol){
+    private boolean isValidSelect(int selRow, int selCol) {
         // empty place
-        if(board[selRow][selCol] == null) {
+        if (board[selRow][selCol] == null) {
             System.out.println("No piece is there, please try again.");
             // continue this player
             setContinueTurn(true);
@@ -391,7 +380,7 @@ public class Game {
         }
 
         // different color
-        if(board[selRow][selCol].isWhite() != isWhiteTurn){
+        if (board[selRow][selCol].isWhite() != isWhiteTurn) {
             System.out.println("Different color was selected, please try again.");
             // continue this player
             setContinueTurn(true);
@@ -437,8 +426,6 @@ public class Game {
     }
 
     /**
-     * ===== This is something temporal!! =====
-     * ===== might be implemented in each piece class if logic is different depends on piece =====
      * Move a piece from the selected position to the destiny.
      *
      * @param selRow
@@ -521,8 +508,9 @@ public class Game {
     }
 
     private boolean displayPoss(ArrayList<Position> positions) {
-        return displayPoss("",positions, false);
+        return displayPoss("", positions, false);
     }
+
     /**
      * Display a list of Positions as a string.
      * Column number is converted to a char of Column Name.
@@ -533,11 +521,11 @@ public class Game {
      * @return boolean - true: there is possible positions, false: no possible positions
      */
 
-        private boolean displayPoss(String input, ArrayList<Position> positions) {
+    private boolean displayPoss(String input, ArrayList<Position> positions) {
         return displayPoss(input, positions, true);
     }
 
-        private boolean displayPoss(String input, ArrayList<Position> positions, boolean individualDisplay) {
+    private boolean displayPoss(String input, ArrayList<Position> positions, boolean individualDisplay) {
         StringBuilder sb = new StringBuilder();
         if (individualDisplay) {
             sb.append("Possible moves for ");
@@ -575,58 +563,135 @@ public class Game {
         }
     }
 
+    /**
+     * Check if King is checked.
+     * if King is in Check and has no legal movements --> CHECKMATE
+     * Eliminate possibilities that coincide with Enemy's pieces
+     * if King.getPoss == null && King in check --> return True
+     *
+     * @return
+     */
     public boolean isKingCheckmate() {
-        // if King is in Check and has no legal movements --> CHECKMATE
-        // Eliminate possibilities that coincide with Enemy's pieces
-        // if King.getPoss == null && King in check --> return True
-        if (isWhiteTurn()) {
-            // Current Turn is White: check for White King
-            if (whiteKing.getPoss(board, whiteKing) == null
-                && (King.isKingChecked(board, whiteKing.getPosition(), isWhiteTurn))) {
-                // @Nico: ^ if you don't call 'escapeFromEnemy()' directly, then where are you going to use 'curKing' ArrayList?
-                return true;
-            }
-        } else {
-            // Current Turn is Black: check for Black King
-            if (blackKing.getPoss(board, blackKing) == null
-                && (King.isKingChecked(board, blackKing.getPosition(), isWhiteTurn))) {
-                return true;
-            }
-        }
-        return false;
+        King k = isWhiteTurn ? whiteKing : blackKing;
+        ArrayList<Position> kingPoss = k.getPoss(board, k);
+        return (!isEscapable(kingPoss) && (King.isKingChecked(board, k.getPosition(), isWhiteTurn)));
     }
 
-
+    /**
+     * Check if the game is drawn.
+     * if King is not in check but it has no legal movements
+     * Eliminate possibilities that coincide with Enemy's pieces
+     * if King.getPoss == null && King in check --> return True
+     *
+     * @return
+     */
     public boolean isGameDrawn() {
-        // if King is not in check but it has no legal movements
-        // Eliminate possibilities that coincide with Enemy's pieces
-        // if King.getPoss == null && King in check --> return True
-//        if (King.escapeFromEnemy(board, kingposs) == null && (!isKingCheck)) {
-//            return true;
-//        }
-        if (isWhiteTurn()) {
-            // Current Turn is White: check for White King
-            if (whiteKing.getPoss(board, whiteKing) == null
-                && (!King.isKingChecked(board, whiteKing.getPosition(), isWhiteTurn))) {
-                // @Nico: ^ if you don't call 'escapeFromEnemy()' directly, then where are you going to use 'curKing' ArrayList?
-                return true;
-            }
-        } else {
-            // Current Turn is Black: check for Black King
-            if (blackKing.getPoss(board, blackKing) == null
-                && (!King.isKingChecked(board, blackKing.getPosition(), isWhiteTurn))) {
-                return true;
-            }
-        }
-        return false;
+        King k = isWhiteTurn ? whiteKing : blackKing;
+        ArrayList<Position> kingPoss = k.getPoss(board, k);
+        return (!isEscapable(kingPoss) && (!King.isKingChecked(board, k.getPosition(), isWhiteTurn)));
     }
 
     public void displayResult() {
-        if (isWhiteTurn() && isKingCheckmate()) {
+        if (isWhiteTurn) {
             System.out.println("Game over! Blacks win by Checkmate!");
         } else {
             System.out.println("Game over! Whites win by Checkmate!");
         }
     }
+
+    /**
+     * Return if King is able to escape from the enemy.
+     *
+     * @param kingPoss
+     * @return
+     */
+    private boolean isEscapable(ArrayList<Position> kingPoss) {
+        ArrayList<Position> enemyPoss = getEnemyPoss();
+        if (kingPoss.size() == 0 || enemyPoss.size() == 0) {
+            return isKingProtected();
+        }
+
+        for (Position p : kingPoss) {
+            if (enemyPoss.contains(p)) {
+                // same position : remove from kingPoss
+                kingPoss.remove(p);
+            }
+        }
+        return kingPoss.size() == 0;
+    }
+
+    /**
+     * if the king is surrounded by the same color, cannot move but still not game over
+     *
+     * @return
+     */
+    private boolean isKingProtected() {
+        King k = isWhiteTurn ? whiteKing : blackKing;
+        int row = k.getPosition().getRow();
+        int col = k.getPosition().getCol();
+
+        // front of King
+        if (checkPieceColor(row + 1, col - 1))
+            return true;
+        if (checkPieceColor(row + 1, col))
+            return true;
+        if (checkPieceColor(row + 1, col + 1))
+            return true;
+
+        // besides King
+        if (checkPieceColor(row, col - 1))
+            return true;
+        if (checkPieceColor(row, col + 1))
+            return true;
+
+        // behind King
+        if (checkPieceColor(row - 1, col - 1))
+            return true;
+        if (checkPieceColor(row - 1, col))
+            return true;
+        if (checkPieceColor(row - 1, col + 1))
+            return true;
+        return false;
+    }
+
+    /**
+     * Check if the color in the target position is the same color
+     * @param targetRow
+     * @param targetCol
+     * @return
+     */
+    private boolean checkPieceColor(int targetRow, int targetCol) {
+        if (targetRow < 0 || targetRow >= BOARD_RANGE
+                || targetCol < 0 || targetCol >= BOARD_RANGE)
+            return false;
+
+        return (board[targetRow][targetCol].isWhite() == isWhiteTurn);
+    }
+
+    /**
+     * Return Enemy's possible positions as a list
+     *
+     * @return
+     */
+    private ArrayList<Position> getEnemyPoss() {
+        ArrayList<Position> poss = new ArrayList<>();
+        for (int r = Game.BOARD_RANGE - 1; r >= 0; r--) {
+            for (int c = 0; c < Game.BOARD_RANGE; c++) {
+                // no piece or same color: skip
+                if (board[r][c] == null || board[r][c].isWhite() != isWhiteTurn)
+                    continue;
+
+                // different color -> getPoss
+                ArrayList<Position> result = board[r][c].getPoss(board, board[r][c]);
+                // no possible positions
+                if (result == null || result.size() == 0) {
+                    continue;
+                }
+                poss.addAll(result);
+            }
+        }
+        return poss;
+    }
+
 }
 
