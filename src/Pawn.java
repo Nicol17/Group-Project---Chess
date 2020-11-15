@@ -173,7 +173,7 @@ public class Pawn extends Piece {
                 int endCountBlack = 1;
                 // since second movement for Pawn
                 // Since second movement Pawn can be moved by at most 1 step forward straight
-                while (startCountBlack >= endCountBlack) {
+                while (startCountBlack < endCountBlack) {
                     if (startCountBlack == 0) {
                         if (colPos == 0) {
                             // take right bottom black piece
