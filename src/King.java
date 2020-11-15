@@ -64,7 +64,7 @@ public class King extends Piece {
      * @param targetCol column of Position to check if {@param piece} can move to
      * @return
      */
-    private Position checkForKing(Piece[][] board, Piece king, int targetRow, int targetCol) {
+    private static Position checkForKing(Piece[][] board, Piece king, int targetRow, int targetCol) {
         if (board[targetRow][targetCol] == null) {
             return new Position(targetRow, targetCol);
         } else {
@@ -82,7 +82,7 @@ public class King extends Piece {
      * @param kingPoss  the king's positions
      * @return
      */
-    private ArrayList<Position> escapeFromEnemy(Piece[][] board,
+    public static ArrayList<Position> escapeFromEnemy(Piece[][] board,
         ArrayList<Position> kingPoss) {
         ArrayList<Position> poss = new ArrayList<>();
         for (int r = Game.BOARD_RANGE - 1; r >= 0; r--) {
@@ -109,6 +109,32 @@ public class King extends Piece {
             }
         }
         return kingPoss;
+    }
+
+
+    protected static boolean isKingChecked(Piece[][] board, Position currentKing, boolean kingsColour) {
+        ArrayList<Position> poss = new ArrayList<>();
+        for (int r = Game.BOARD_RANGE - 1; r >= 0; r--) {
+            for (int c = 0; c < Game.BOARD_RANGE; c++) {
+//        no piece: skip
+                if (board[r][c] == null) {
+                    continue;
+                }
+                if (board[r][c].isWhite() != kingsColour) {
+//          different color -> getPoss
+                    ArrayList<Position> enemyPoss = board[r][c].getPoss(board, board[r][c]);
+//        System.out.println("poss: \n" + Arrays.toString(poss.toArray()));
+                    // no possible positions
+                    if (enemyPoss == null || enemyPoss.size() == 0) {
+                        continue;
+                    }
+                        if (enemyPoss.contains(currentKing)) {
+                            return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
     @Override
     public void move(Position newPosition) {
