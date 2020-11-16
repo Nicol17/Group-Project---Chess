@@ -233,51 +233,50 @@ public class Game {
                     ArrayList<Position> poss = board[r][c].getPoss(board, board[r][c]);
                     switch (value) {
                         case (Pawn.VALUE):
+                            System.out.println("Pawn available moves: ");
                             if (!displayPoss(poss)) {
                                 System.out.println("Pawn has no available moves");
                                 continue;
                             } else {
-                                System.out.println("Pawn available moves: " + displayPoss(poss));
                                 break;
                             }
                         case (Rook.VALUE):
+                            System.out.println("Rook available moves: ");
                             if (!displayPoss(poss)) {
                                 System.out.println("Rook has no available moves");
                                 continue;
                             } else {
-                                System.out.println("Rook available moves: " + displayPoss(poss));
                                 break;
                             }
                         case (Knight.VALUE):
+                            System.out.println("Knight available moves: ");
                             if (!displayPoss(poss)) {
                                 System.out.println("Knight has no available moves");
                                 continue;
                             } else {
-                                System.out.println("Knight available moves: " + displayPoss(poss));
                                 break;
                             }
                         case (Bishop.VALUE):
+                            System.out.println("Bishop available moves: ");
                             if (!displayPoss(poss)) {
                                 System.out.println("Bishop has no available moves");
                                 continue;
                             } else {
-                                System.out.println("Bishop available moves: " + displayPoss(poss));
                                 break;
                             }
                         case (Queen.VALUE):
+                            System.out.println("Queen available moves: ");
                             if (!displayPoss(poss)) {
                                 System.out.println("Queen has no available moves");
                                 continue;
                             } else {
-                                System.out.println("Queen available moves: " + displayPoss(poss));
                                 break;
                             }
                         case (King.VALUE):
+                            System.out.println("King available moves: ");
                             if (!displayPoss(poss)) {
                                 System.out.println("King has no available moves");
-                                continue;
                             } else {
-                                System.out.println("King available moves: " + displayPoss(poss));
                                 break;
                             }
                     }
