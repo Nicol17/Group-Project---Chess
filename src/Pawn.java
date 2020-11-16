@@ -4,6 +4,9 @@ import java.util.Objects;
 public class Pawn extends Piece {
     ///////////////////////////////////////////////////
     protected static final int VALUE = 1;
+    // Default row position: used for check the initial move (Yurie K)
+    private static final int DEFAULT_ROW_WHITE = 1;
+    private static final int DEFAULT_ROW_BLACK = (Game.BOARD_RANGE - 1) - 1;
     ///////////////////////////////////////////////////
 
     private boolean promoted;
@@ -39,11 +42,13 @@ public class Pawn extends Piece {
         ArrayList<Position> poss = new ArrayList<>();
         int rowPos = selPiece.getPosition().getRow();
         int colPos = selPiece.getPosition().getCol();
+        boolean initMove;
 //        System.out.println("-- Pawn is called --");
 //        System.out.printf("selected (row, col): (%d, %d)%n", row, col);
         // in case of white piece
         if (selPiece.isWhite() == true) {
             if (!isPromoted()) {
+                initMove = rowPos == DEFAULT_ROW_WHITE; // check if the initial move
                 int firstWhiteRowPos = 1;
                 int firstWhiteMaxRowPos = 3;
                 // first movement for Pawn
@@ -54,7 +59,7 @@ public class Pawn extends Piece {
                             if ((board[rowPos + 1][colPos + 1] != null) && ((selPiece.isWhite()) != (board[rowPos + 1][colPos + 1].isWhite()))) {
                                 poss.add(new Position(rowPos + 1, colPos + 1));
                             }
-                        }else if (colPos == 7) {
+                        } else if (colPos == 7) {
                             if ((board[rowPos + 1][colPos - 1] != null) && ((selPiece.isWhite()) != (board[rowPos + 1][colPos - 1].isWhite()))) {
                                 poss.add(new Position(rowPos + 1, colPos - 1));
                             }
@@ -80,6 +85,12 @@ public class Pawn extends Piece {
                     if (firstWhiteRowPos == firstWhiteMaxRowPos) {
                         break;
                     }
+
+                    // continue if the initial move
+                    if (initMove)
+                        initMove = false;
+                    else
+                        break;
                 }
 
                 firstWhiteRowPos = 1;
@@ -130,6 +141,7 @@ public class Pawn extends Piece {
             // in case of black piece
         } else {
             if (!isPromoted()) {
+                initMove = rowPos == DEFAULT_ROW_BLACK; // check if the initial move
                 int firstBlackRowPos = 7;
                 int firstBlackMaxRowPos = 5;
                 // first movement for Pawn
@@ -165,6 +177,12 @@ public class Pawn extends Piece {
                     if (firstBlackRowPos == firstBlackMaxRowPos) {
                         break;
                     }
+
+                    // continue if the initial move
+                    if (initMove)
+                        initMove = false;
+                    else
+                        break;
                 }
 
                 firstBlackRowPos = 7;
