@@ -81,50 +81,52 @@ public class Pawn extends Piece {
                         break;
                     }
                 }
-                this.promoted = true;
+
                 firstWhiteRowPos = 1;
                 firstWhiteMaxRowPos = 3;
                 return poss;
-            } else {
-                int startCountWhite = 0;
-                int endCountWhite = 1;
-                // since second movement for Pawn
-                // Since second movement Pawn can be moved by at most 1 step forward straight
-                while(startCountWhite < endCountWhite) {
-                    if (startCountWhite == 0) {
-                        if (colPos == 0) {
-                            if (((board[rowPos + 1][colPos + 1]) != null) && ((selPiece.isWhite()) != (board[rowPos + 1][colPos + 1].isWhite()))) {
-                                poss.add(new Position(rowPos + 1, colPos + 1));
-                            }
-                        } else if (colPos == 7) {
-                            if (((board[rowPos + 1][colPos - 1]) != null) && ((selPiece.isWhite()) != (board[rowPos + 1][colPos - 1].isWhite()))) {
-                                poss.add(new Position(rowPos + 1, colPos - 1));
-                            }
-                        } else {
-                            // take right top black piece
-                            if (((board[rowPos + 1][colPos + 1]) != null) && ((selPiece.isWhite()) != (board[rowPos + 1][colPos + 1].isWhite()))) {
-                                poss.add(new Position(rowPos + 1, colPos + 1));
-                            }
-                            // take left top black piece
-                            if (((board[rowPos + 1][colPos - 1]) != null) && ((selPiece.isWhite()) != (board[rowPos + 1][colPos - 1].isWhite()))) {
-                                poss.add(new Position(rowPos + 1, colPos - 1));
-                            }
-                        }
-                    }
-                    // if destiny piece's color is same, stop in front of the piece
-                    if ((board[rowPos + 1][colPos]) != null) {
-                        break;
-                    }
-                    poss.add(new Position(rowPos + 1, colPos));
-                    rowPos++;
-                    startCountWhite++;
-
-                    if (startCountWhite == endCountWhite) {
-                        break;
-                    }
-                }
-                return poss;
             }
+            // did not implemented Promotion logic, so commented out (Yurie K)
+//            else {
+//                int startCountWhite = 0;
+//                int endCountWhite = 1;
+//                // since second movement for Pawn
+//                // Since second movement Pawn can be moved by at most 1 step forward straight
+//                while(startCountWhite < endCountWhite) {
+//                    if (startCountWhite == 0) {
+//                        if (colPos == 0) {
+//                            if (((board[rowPos + 1][colPos + 1]) != null) && ((selPiece.isWhite()) != (board[rowPos + 1][colPos + 1].isWhite()))) {
+//                                poss.add(new Position(rowPos + 1, colPos + 1));
+//                            }
+//                        } else if (colPos == 7) {
+//                            if (((board[rowPos + 1][colPos - 1]) != null) && ((selPiece.isWhite()) != (board[rowPos + 1][colPos - 1].isWhite()))) {
+//                                poss.add(new Position(rowPos + 1, colPos - 1));
+//                            }
+//                        } else {
+//                            // take right top black piece
+//                            if (((board[rowPos + 1][colPos + 1]) != null) && ((selPiece.isWhite()) != (board[rowPos + 1][colPos + 1].isWhite()))) {
+//                                poss.add(new Position(rowPos + 1, colPos + 1));
+//                            }
+//                            // take left top black piece
+//                            if (((board[rowPos + 1][colPos - 1]) != null) && ((selPiece.isWhite()) != (board[rowPos + 1][colPos - 1].isWhite()))) {
+//                                poss.add(new Position(rowPos + 1, colPos - 1));
+//                            }
+//                        }
+//                    }
+//                    // if destiny piece's color is same, stop in front of the piece
+//                    if ((board[rowPos + 1][colPos]) != null) {
+//                        break;
+//                    }
+//                    poss.add(new Position(rowPos + 1, colPos));
+//                    rowPos++;
+//                    startCountWhite++;
+//
+//                    if (startCountWhite == endCountWhite) {
+//                        break;
+//                    }
+//                }
+//                return poss;
+//            }
             // in case of black piece
         } else {
             if (!isPromoted()) {
@@ -164,52 +166,55 @@ public class Pawn extends Piece {
                         break;
                     }
                 }
-                this.promoted = true;
+
                 firstBlackRowPos = 7;
                 firstBlackMaxRowPos = 5;
                 return poss;
-            } else {
-                int startCountBlack = 0;
-                int endCountBlack = 1;
-                // since second movement for Pawn
-                // Since second movement Pawn can be moved by at most 1 step forward straight
-                while (startCountBlack < endCountBlack) {
-                    if (startCountBlack == 0) {
-                        if (colPos == 0) {
-                            // take right bottom black piece
-                            if ((board[rowPos - 1][colPos + 1] != null) && ((selPiece.isWhite()) != (board[rowPos - 1][colPos + 1].isWhite()))) {
-                                poss.add(new Position(rowPos - 1, colPos + 1));
-                            }
-                        } else if (colPos == 7) {
-                            // take right bottom black piece
-                            if ((board[rowPos - 1][colPos - 1] != null) && ((selPiece.isWhite()) != (board[rowPos - 1][colPos - 1].isWhite()))) {
-                                poss.add(new Position(rowPos - 1, colPos - 1));
-                            }
-                        } else {
-                            // take right bottom black piece
-                            if ((board[rowPos - 1][colPos + 1] != null) && ((selPiece.isWhite()) != (board[rowPos - 1][colPos + 1].isWhite()))) {
-                                poss.add(new Position(rowPos - 1, colPos + 1));
-                            }
-                            // take left bottom black piece
-                            if ((board[rowPos - 1][colPos + 1] != null) && ((selPiece.isWhite()) != (board[rowPos - 1][colPos - 1].isWhite()))) {
-                                poss.add(new Position(rowPos - 1, colPos - 1));
-                            }
-                        }
-                    }
-                    // if destiny piece's color is same, stop in front of the piece
-                    if ((board[rowPos - 1][colPos]) != null) {
-                        break;
-                    }
-                    poss.add(new Position(rowPos - 1, colPos));
-                    rowPos--;
-                    startCountBlack++;
-                    if (startCountBlack == endCountBlack) {
-                        break;
-                    }
-                }
-                return poss;
             }
+            // did not implemented Promotion logic, so commented out (Yurie K)
+//            else {
+//                int startCountBlack = 0;
+//                int endCountBlack = 1;
+//                // since second movement for Pawn
+//                // Since second movement Pawn can be moved by at most 1 step forward straight
+//                while (startCountBlack < endCountBlack) {
+//                    if (startCountBlack == 0) {
+//                        if (colPos == 0) {
+//                            // take right bottom black piece
+//                            if ((board[rowPos - 1][colPos + 1] != null) && ((selPiece.isWhite()) != (board[rowPos - 1][colPos + 1].isWhite()))) {
+//                                poss.add(new Position(rowPos - 1, colPos + 1));
+//                            }
+//                        } else if (colPos == 7) {
+//                            // take right bottom black piece
+//                            if ((board[rowPos - 1][colPos - 1] != null) && ((selPiece.isWhite()) != (board[rowPos - 1][colPos - 1].isWhite()))) {
+//                                poss.add(new Position(rowPos - 1, colPos - 1));
+//                            }
+//                        } else {
+//                            // take right bottom black piece
+//                            if ((board[rowPos - 1][colPos + 1] != null) && ((selPiece.isWhite()) != (board[rowPos - 1][colPos + 1].isWhite()))) {
+//                                poss.add(new Position(rowPos - 1, colPos + 1));
+//                            }
+//                            // take left bottom black piece
+//                            if ((board[rowPos - 1][colPos + 1] != null) && ((selPiece.isWhite()) != (board[rowPos - 1][colPos - 1].isWhite()))) {
+//                                poss.add(new Position(rowPos - 1, colPos - 1));
+//                            }
+//                        }
+//                    }
+//                    // if destiny piece's color is same, stop in front of the piece
+//                    if ((board[rowPos - 1][colPos]) != null) {
+//                        break;
+//                    }
+//                    poss.add(new Position(rowPos - 1, colPos));
+//                    rowPos--;
+//                    startCountBlack++;
+//                    if (startCountBlack == endCountBlack) {
+//                        break;
+//                    }
+//                }
+//                return poss;
+//            }
         }
+        return poss;
     }
 
     @Override
