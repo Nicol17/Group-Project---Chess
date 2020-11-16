@@ -20,7 +20,6 @@ public class Bishop extends Piece {
      * @param selPiece the selected piece that user wants to move it
      * @return
      */
-    @Override
     public ArrayList<Position> getPoss(Piece[][] board, Piece selPiece) {
         final int row = selPiece.getPosition().getRow();
         final int col = selPiece.getPosition().getCol();
@@ -45,7 +44,7 @@ public class Bishop extends Piece {
         // diagonal / left to right / down
         curRow = row;
         curCol = col;
-        while (0 < curRow && curRow < Game.BOARD_RANGE - 1 && 0 <= curCol && curCol < Game.BOARD_RANGE - 1) {
+        while (0 < curRow && curRow < Game.BOARD_RANGE && 0 <= curCol && curCol < Game.BOARD_RANGE - 1) {
             Object[] result = checkDest(board, selPiece, --curRow, ++curCol);
             if (result[0] != null)
                 poss.add((Position) result[0]);
@@ -56,7 +55,7 @@ public class Bishop extends Piece {
         // diagonal / right to left / up
         curRow = row;
         curCol = col;
-        while (0 <= curRow && curRow < Game.BOARD_RANGE - 1 && 0 < curCol && curCol < Game.BOARD_RANGE - 1) {
+        while (0 <= curRow && curRow < Game.BOARD_RANGE - 1 && 0 < curCol && curCol < Game.BOARD_RANGE) {
             Object[] result = checkDest(board, selPiece, ++curRow, --curCol);
             if (result[0] != null)
                 poss.add((Position) result[0]);
@@ -67,7 +66,7 @@ public class Bishop extends Piece {
         // diagonal / right to left / down
         curRow = row;
         curCol = col;
-        while (0 < curRow && curRow < Game.BOARD_RANGE - 1 && 0 < curCol && curCol < Game.BOARD_RANGE - 1) {
+        while (0 < curRow && curRow < Game.BOARD_RANGE && 0 < curCol && curCol < Game.BOARD_RANGE) {
             Object[] result = checkDest(board, selPiece, --curRow, --curCol);
             if (result[0] != null)
                 poss.add((Position) result[0]);
